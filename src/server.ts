@@ -4,22 +4,33 @@ import cors from 'cors';
 import schema from './schema';
 import { ApolloServer } from 'apollo-server-express';
 import { createServer } from 'http';
-const app = express();
+import environment from './config/environment';
 
-app.use('*', cors());
+if (process.env.NODE_ENV !== 'production') {
+    const envs = environment;
+    console.log(envs);
+}
 
-app.use(compression());
+async function init() {
+    const app = express();
 
-const server = new ApolloServer({
-    schema,
-    introspection: true
-});
+    app.use('*', cors());
 
-server.applyMiddleware({ app });
+    app.use(compression());
 
-const PORT = 5300;
-const httpServer = createServer(app);
-httpServer.listen(
-    { port : PORT },
-    () => console.log(`Hola Mundo API GraphQL http://localhost:${PORT}/graphql`)
-);
+    const server = new ApolloServer({
+        schema,
+        introspection: true
+    });
+
+    server.applyMiddleware({ app });
+
+    const PORT = 5300;
+    const httpServer = createServer(app);
+    httpServer.listen(
+        { port : PORT },
+        () => console.log(`Hola Mundo API GraphQL http://localhost:${PORT}/graphql`)
+    );
+}
+
+init();

@@ -1,5 +1,33 @@
  type Query {
-    hola: String!
-    holaConNombre(nombre: String!): String!
-    holaAlCursoGraphQL: String!
+    "Obtain all users"
+    users: [User!]!
+    "Login user"
+    login(email: String!, password: String!): User!
+    "Obtain user data with Token"
+    user: User!
+}
+
+type Mutation {
+    "Register new users"
+    register(user: UserInput): User!
+}
+
+
+
+
+type User {
+    id: ID!
+    name: String!
+    lasname: String!
+    email: String!
+    password: String!
+    registerDate: String!
+}
+
+input UserInput {
+    name: String!
+    lasname: String!
+    email: String!
+    password: String!
+    registerDate: String!
 }
